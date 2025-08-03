@@ -12,7 +12,8 @@ const Upload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string>("")
   const [itemDetails, setItemDetails] = useState({
-    type: "",
+    category: "",
+    subcategory: "",
     color: "",
     fit: "",
     brand: "",
@@ -52,7 +53,8 @@ const Upload = () => {
     setSelectedFile(null)
     setPreview("")
     setItemDetails({
-      type: "",
+      category: "",
+      subcategory: "",
       color: "",
       fit: "",
       brand: "",
@@ -115,91 +117,149 @@ const Upload = () => {
               </div>
 
               {/* Item Details */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4">
+                {/* Main Category */}
                 <div className="space-y-2">
-                  <Label htmlFor="type">Item Type</Label>
+                  <Label htmlFor="category">Main Category</Label>
+                  <Select value={itemDetails.category} onValueChange={(value) => setItemDetails(prev => ({ ...prev, category: value }))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select main category" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border border-border shadow-lg z-50">
+                      <SelectItem value="shirts">Shirts & Tops</SelectItem>
+                      <SelectItem value="pants">Pants & Bottoms</SelectItem>
+                      <SelectItem value="dresses">Dresses & Skirts</SelectItem>
+                      <SelectItem value="outerwear">Jackets & Outerwear</SelectItem>
+                      <SelectItem value="shoes">Shoes</SelectItem>
+                      <SelectItem value="accessories">Accessories</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Subcategory */}
+                <div className="space-y-2">
+                  <Label htmlFor="subcategory">Specific Type</Label>
                   <Input
-                    id="type"
-                    list="clothing-types"
-                    placeholder="Type or select clothing type"
-                    value={itemDetails.type}
-                    onChange={(e) => setItemDetails(prev => ({ ...prev, type: e.target.value }))}
+                    id="subcategory"
+                    list="subcategory-types"
+                    placeholder="Type specific clothing type (e.g. jean pants, formal shirt, linen top)"
+                    value={itemDetails.subcategory}
+                    onChange={(e) => setItemDetails(prev => ({ ...prev, subcategory: e.target.value }))}
                   />
-                  <datalist id="clothing-types">
-                    <option value="Shirt" />
-                    <option value="T-Shirt" />
+                  <datalist id="subcategory-types">
+                    {/* Shirts & Tops */}
+                    <option value="Dress shirt" />
+                    <option value="Casual shirt" />
+                    <option value="Formal shirt" />
+                    <option value="Polo shirt" />
+                    <option value="T-shirt" />
+                    <option value="Tank top" />
                     <option value="Blouse" />
-                    <option value="Tank Top" />
-                    <option value="Jeans" />
-                    <option value="Pants" />
-                    <option value="Trousers" />
-                    <option value="Chinos" />
-                    <option value="Dress" />
-                    <option value="Skirt" />
-                    <option value="Shorts" />
-                    <option value="Blazer" />
-                    <option value="Jacket" />
-                    <option value="Coat" />
+                    <option value="Crop top" />
                     <option value="Hoodie" />
                     <option value="Sweater" />
                     <option value="Cardigan" />
-                    <option value="Formal Wear" />
-                    <option value="Shoes" />
-                    <option value="Sneakers" />
+                    <option value="Linen shirt" />
+                    <option value="Flannel shirt" />
+                    
+                    {/* Pants & Bottoms */}
+                    <option value="Jean pants" />
+                    <option value="Formal pants" />
+                    <option value="Dress pants" />
+                    <option value="Chinos" />
+                    <option value="Shorts" />
+                    <option value="Cargo pants" />
+                    <option value="Linen pants" />
+                    <option value="Sweatpants" />
+                    <option value="Leggings" />
+                    <option value="Wide-leg pants" />
+                    
+                    {/* Dresses & Skirts */}
+                    <option value="Casual dress" />
+                    <option value="Formal dress" />
+                    <option value="Cocktail dress" />
+                    <option value="Maxi dress" />
+                    <option value="Mini dress" />
+                    <option value="A-line skirt" />
+                    <option value="Pencil skirt" />
+                    <option value="Mini skirt" />
+                    
+                    {/* Outerwear */}
+                    <option value="Blazer" />
+                    <option value="Suit jacket" />
+                    <option value="Denim jacket" />
+                    <option value="Leather jacket" />
+                    <option value="Winter coat" />
+                    <option value="Trench coat" />
+                    <option value="Windbreaker" />
+                    
+                    {/* Shoes */}
+                    <option value="Dress shoes" />
+                    <option value="Casual sneakers" />
+                    <option value="Running shoes" />
                     <option value="Boots" />
                     <option value="Sandals" />
-                    <option value="Accessories" />
+                    <option value="Heels" />
+                    <option value="Loafers" />
+                    
+                    {/* Accessories */}
                     <option value="Belt" />
                     <option value="Scarf" />
                     <option value="Hat" />
+                    <option value="Watch" />
+                    <option value="Bag" />
+                    <option value="Sunglasses" />
                   </datalist>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="fit">Fit</Label>
-                  <Input
-                    id="fit"
-                    list="fit-types"
-                    placeholder="Type or select fit"
-                    value={itemDetails.fit}
-                    onChange={(e) => setItemDetails(prev => ({ ...prev, fit: e.target.value }))}
-                  />
-                  <datalist id="fit-types">
-                    <option value="Slim" />
-                    <option value="Skinny" />
-                    <option value="Regular" />
-                    <option value="Straight" />
-                    <option value="Loose" />
-                    <option value="Relaxed" />
-                    <option value="Oversized" />
-                    <option value="Tailored" />
-                    <option value="Athletic" />
-                    <option value="Bootcut" />
-                    <option value="Wide-leg" />
-                    <option value="Cropped" />
-                    <option value="High-waisted" />
-                    <option value="Low-rise" />
-                  </datalist>
-                </div>
+                {/* Fit and other details */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="fit">Fit</Label>
+                    <Input
+                      id="fit"
+                      list="fit-types"
+                      placeholder="Type or select fit"
+                      value={itemDetails.fit}
+                      onChange={(e) => setItemDetails(prev => ({ ...prev, fit: e.target.value }))}
+                    />
+                    <datalist id="fit-types">
+                      <option value="Slim" />
+                      <option value="Skinny" />
+                      <option value="Regular" />
+                      <option value="Straight" />
+                      <option value="Loose" />
+                      <option value="Relaxed" />
+                      <option value="Oversized" />
+                      <option value="Tailored" />
+                      <option value="Athletic" />
+                      <option value="Bootcut" />
+                      <option value="Wide-leg" />
+                      <option value="Cropped" />
+                      <option value="High-waisted" />
+                      <option value="Low-rise" />
+                    </datalist>
+                  </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="color">Color</Label>
-                  <Input
-                    id="color"
-                    placeholder="e.g. Navy Blue"
-                    value={itemDetails.color}
-                    onChange={(e) => setItemDetails(prev => ({ ...prev, color: e.target.value }))}
-                  />
-                </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="color">Color</Label>
+                    <Input
+                      id="color"
+                      placeholder="e.g. Navy Blue"
+                      value={itemDetails.color}
+                      onChange={(e) => setItemDetails(prev => ({ ...prev, color: e.target.value }))}
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="size">Size</Label>
-                  <Input
-                    id="size"
-                    placeholder="e.g. M, L, 32"
-                    value={itemDetails.size}
-                    onChange={(e) => setItemDetails(prev => ({ ...prev, size: e.target.value }))}
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="size">Size</Label>
+                    <Input
+                      id="size"
+                      placeholder="e.g. M, L, 32"
+                      value={itemDetails.size}
+                      onChange={(e) => setItemDetails(prev => ({ ...prev, size: e.target.value }))}
+                    />
+                  </div>
                 </div>
               </div>
 
