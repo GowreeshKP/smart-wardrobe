@@ -118,34 +118,68 @@ const Upload = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="type">Item Type</Label>
-                  <Select value={itemDetails.type} onValueChange={(value) => setItemDetails(prev => ({ ...prev, type: value }))}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="shirt">Shirt</SelectItem>
-                      <SelectItem value="pants">Pants</SelectItem>
-                      <SelectItem value="dress">Dress</SelectItem>
-                      <SelectItem value="jacket">Jacket</SelectItem>
-                      <SelectItem value="shoes">Shoes</SelectItem>
-                      <SelectItem value="accessories">Accessories</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id="type"
+                    list="clothing-types"
+                    placeholder="Type or select clothing type"
+                    value={itemDetails.type}
+                    onChange={(e) => setItemDetails(prev => ({ ...prev, type: e.target.value }))}
+                  />
+                  <datalist id="clothing-types">
+                    <option value="Shirt" />
+                    <option value="T-Shirt" />
+                    <option value="Blouse" />
+                    <option value="Tank Top" />
+                    <option value="Jeans" />
+                    <option value="Pants" />
+                    <option value="Trousers" />
+                    <option value="Chinos" />
+                    <option value="Dress" />
+                    <option value="Skirt" />
+                    <option value="Shorts" />
+                    <option value="Blazer" />
+                    <option value="Jacket" />
+                    <option value="Coat" />
+                    <option value="Hoodie" />
+                    <option value="Sweater" />
+                    <option value="Cardigan" />
+                    <option value="Formal Wear" />
+                    <option value="Shoes" />
+                    <option value="Sneakers" />
+                    <option value="Boots" />
+                    <option value="Sandals" />
+                    <option value="Accessories" />
+                    <option value="Belt" />
+                    <option value="Scarf" />
+                    <option value="Hat" />
+                  </datalist>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="fit">Fit</Label>
-                  <Select value={itemDetails.fit} onValueChange={(value) => setItemDetails(prev => ({ ...prev, fit: value }))}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select fit" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="slim">Slim</SelectItem>
-                      <SelectItem value="regular">Regular</SelectItem>
-                      <SelectItem value="loose">Loose</SelectItem>
-                      <SelectItem value="oversized">Oversized</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id="fit"
+                    list="fit-types"
+                    placeholder="Type or select fit"
+                    value={itemDetails.fit}
+                    onChange={(e) => setItemDetails(prev => ({ ...prev, fit: e.target.value }))}
+                  />
+                  <datalist id="fit-types">
+                    <option value="Slim" />
+                    <option value="Skinny" />
+                    <option value="Regular" />
+                    <option value="Straight" />
+                    <option value="Loose" />
+                    <option value="Relaxed" />
+                    <option value="Oversized" />
+                    <option value="Tailored" />
+                    <option value="Athletic" />
+                    <option value="Bootcut" />
+                    <option value="Wide-leg" />
+                    <option value="Cropped" />
+                    <option value="High-waisted" />
+                    <option value="Low-rise" />
+                  </datalist>
                 </div>
 
                 <div className="space-y-2">
