@@ -33,7 +33,7 @@ const Upload = () => {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedFile) {
       toast({
         title: "No image selected",
@@ -43,23 +43,54 @@ const Upload = () => {
       return
     }
 
-    // Here we would normally upload to backend/Supabase
-    toast({
-      title: "Item added successfully!",
-      description: "Your clothing item has been added to your wardrobe",
-    })
-    
-    // Reset form
-    setSelectedFile(null)
-    setPreview("")
-    setItemDetails({
-      category: "",
-      subcategory: "",
-      color: "",
-      fit: "",
-      brand: "",
-      size: ""
-    })
+    try {
+      // Create FormData for file upload
+      const formData = new FormData()
+      formData.append('image', selectedFile)
+      formData.append('userId', 'user123') // You can make this dynamic later
+      formData.append('category', itemDetails.category)
+      formData.append('subcategory', itemDetails.subcategory)
+      formData.append('color', itemDetails.color)
+      formData.append('fit', itemDetails.fit)
+      formData.append('brand', itemDetails.brand)
+      formData.append('size', itemDetails.size)
+
+      // Send to backend
+      const response = await fetch('http://localhost:5000/api/wardrobe', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to upload item')
+      }
+
+      const result = await response.json()
+      
+      toast({
+        title: "Item added successfully!",
+        description: "Your clothing item has been added to your wardrobe",
+      })
+      
+      // Reset form
+      setSelectedFile(null)
+      setPreview("")
+      setItemDetails({
+        category: "",
+        subcategory: "",
+        color: "",
+        fit: "",
+        brand: "",
+        size: ""
+      })
+    } catch (error) {
+      console.error('Upload error:', error)
+      toast({
+        title: "Upload failed",
+        description: "Failed to upload item. Please try again.",
+        variant: "destructive"
+      })
+    }
   }
 
   return (
@@ -68,16 +99,21 @@ const Upload = () => {
       <main className="pt-24 pb-8 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
+              <UploadIcon className="w-8 h-8 text-primary-foreground" />
+            </div>
             <h1 className="text-3xl font-bold mb-2">Add to Wardrobe</h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground max-w-md mx-auto">
               Upload photos of your clothing items to build your digital wardrobe
             </p>
           </div>
 
-          <Card className="shadow-elegant">
-            <CardHeader>
+          <Card className="shadow-elegant border-0">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-secondary/5 border-b">
               <CardTitle className="flex items-center gap-2">
-                <Image className="w-5 h-5" />
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Image className="w-5 h-5 text-primary" />
+                </div>
                 Upload Clothing Item
               </CardTitle>
             </CardHeader>

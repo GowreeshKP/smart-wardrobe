@@ -1,73 +1,179 @@
+# Smart Wardrobe - AI-Powered Styling Assistant
 
+A modern web application that helps you manage your wardrobe and get AI-powered styling advice.
 
-## Project info
+## Features
 
-**URL**: https://lovable.dev/projects/11d34017-d1cf-4216-84af-6e77a8b32f11
+### 🎯 User Profile Management
+- **Personal Style Profile**: Save your body measurements, skin tone, height, weight, and style preferences
+- **Persistent Storage**: All profile data is stored in MongoDB for personalized recommendations
+- **Easy Updates**: Edit your profile anytime to keep it current
 
-## How can I edit this code?
+### 👕 Digital Wardrobe
+- **Upload Clothing Items**: Add photos of your clothing with detailed information
+- **Categorization**: Organize items by category (shirts, pants, dresses, shoes, accessories)
+- **Detailed Metadata**: Track color, fit, brand, size, and subcategory for each item
+- **Visual Gallery**: Browse your wardrobe with a beautiful card-based interface
+- **Search & Filter**: Find items quickly by category, color, brand, or other attributes
+- **Delete Items**: Remove items from your wardrobe when needed
 
-There are several ways of editing your application.
+### 🤖 AI Styling Assistant
+- **Chat Interface**: Get personalized styling advice through an AI chat interface
+- **Context-Aware**: The AI considers your profile and wardrobe when making recommendations
+- **Real-time Responses**: Instant styling suggestions and outfit recommendations
 
-**Use Lovable**
+### 📱 Modern UI/UX
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
+- **Beautiful Interface**: Modern, clean design with smooth animations
+- **Intuitive Navigation**: Easy-to-use navigation between different sections
+- **Loading States**: Proper loading indicators for better user experience
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/11d34017-d1cf-4216-84af-6e77a8b32f11) and start prompting.
+## Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+### Frontend
+- **React 18** with TypeScript
+- **Vite** for fast development and building
+- **Tailwind CSS** for styling
+- **Shadcn/ui** for UI components
+- **React Router** for navigation
+- **React Query** for data fetching
 
-**Use your preferred IDE**
+### Backend
+- **Node.js** with Express
+- **MongoDB** with Mongoose for data persistence
+- **Multer** for file uploads
+- **OpenAI API** for AI chat functionality
+- **CORS** enabled for cross-origin requests
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
+- Node.js (v16 or higher)
+- MongoDB database
+- OpenAI API key
 
-Follow these steps:
+### Installation
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd smart-wardrobe
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. **Install dependencies**
+   ```bash
+   # Install frontend dependencies
+   npm install
+   
+   # Install backend dependencies
+   cd backend
+   npm install
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. **Environment Setup**
+   
+   Create a `.env` file in the backend directory:
+   ```env
+   MONGO_URI=your_mongodb_connection_string
+   OPENAI_API_KEY=your_openai_api_key
+   PORT=5000
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+4. **Start the development servers**
+   ```bash
+   # Start backend server (from backend directory)
+   npm start
+   
+   # Start frontend server (from root directory)
+   npm run dev
+   ```
+
+5. **Open your browser**
+   - Frontend: http://localhost:5173
+   - Backend: http://localhost:5000
+
+## Usage
+
+### 1. Create Your Profile
+- Navigate to the Profile page
+- Fill in your body measurements and style preferences
+- Save your profile to get personalized recommendations
+
+### 2. Build Your Wardrobe
+- Go to the Upload page to add clothing items
+- Upload photos and add details like category, color, fit, etc.
+- View all your items in the Wardrobe page
+
+### 3. Get AI Advice
+- Use the Chat interface to get styling advice
+- Ask about outfit combinations, style tips, or specific questions
+- The AI will consider your profile and wardrobe when responding
+
+### 4. Manage Your Items
+- Browse your wardrobe with search and filter options
+- Delete items you no longer own
+- View detailed information about each piece
+
+## API Endpoints
+
+### Profile Management
+- `POST /api/profile` - Save or update user profile
+- `GET /api/profile/:userId` - Get user profile
+
+### Wardrobe Management
+- `POST /api/wardrobe` - Upload new wardrobe item
+- `GET /api/wardrobe/:userId` - Get all wardrobe items for user
+- `DELETE /api/wardrobe/:itemId` - Delete wardrobe item
+
+### AI Chat
+- `POST /api/chat` - Send messages to AI assistant
+
+## Database Schema
+
+### User Profile
+```javascript
+{
+  userId: String (required, unique),
+  skinTone: String,
+  height: String,
+  weight: String,
+  chest: String,
+  waist: String,
+  shoulders: String,
+  stylePreference: String,
+  favoriteColors: String,
+  createdAt: Date,
+  updatedAt: Date
+}
 ```
 
-**Edit a file directly in GitHub**
+### Wardrobe Item
+```javascript
+{
+  userId: String (required),
+  imageUrl: String (required),
+  category: String (required),
+  subcategory: String,
+  color: String,
+  fit: String,
+  brand: String,
+  size: String,
+  createdAt: Date
+}
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Contributing
 
-**Use GitHub Codespaces**
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## License
 
-## What technologies are used for this project?
+This project is licensed under the MIT License.
 
-This project is built with:
+## Support
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/11d34017-d1cf-4216-84af-6e77a8b32f11) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+For support or questions, please open an issue in the repository.

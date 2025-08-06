@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Header } from "@/components/layout/Header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { User, Save } from "lucide-react"
+import { User, Save, Loader2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 const Profile = () => {
@@ -26,13 +26,47 @@ const Profile = () => {
     favoriteColors: ""
   })
 
+  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
   const { toast } = useToast()
+
+  const userId = 'user123' // You can make this dynamic later
+
+  useEffect(() => {
+    loadProfile()
+  }, [])
+
+  const loadProfile = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch(`http://localhost:5000/api/profile/${userId}`)
+      
+      if (response.ok) {
+        const userData = await response.json()
+        setProfile({
+          skinTone: userData.skinTone || "",
+          height: userData.height || "",
+          weight: userData.weight || "",
+          chest: userData.chest || "",
+          waist: userData.waist || "",
+          shoulders: userData.shoulders || "",
+          stylePreference: userData.stylePreference || "",
+          favoriteColors: userData.favoriteColors || ""
+        })
+      }
+    } catch (error) {
+      console.error('Load profile error:', error)
+      // Don't show error toast for initial load as user might not have a profile yet
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleInputChange = (field: string, value: string) => {
     setProfile(prev => ({ ...prev, [field]: value }))
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Validate required fields
     if (!profile.skinTone || !profile.height || !profile.weight) {
       toast({
@@ -43,14 +77,59 @@ const Profile = () => {
       return
     }
 
-    // Here we would save to backend/Supabase
-    toast({
-      title: "Profile saved successfully!",
-      description: "Your styling preferences have been updated",
-    })
+    try {
+      setSaving(true)
+      // Send to backend
+      const response = await fetch('http://localhost:5000/api/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          ...profile
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save profile')
+      }
+
+      const result = await response.json()
+      
+      toast({
+        title: "Profile saved successfully!",
+        description: "Your styling preferences have been updated",
+      })
+    } catch (error) {
+      console.error('Save error:', error)
+      toast({
+        title: "Save failed",
+        description: "Failed to save profile. Please try again.",
+        variant: "destructive"
+      })
+    } finally {
+      setSaving(false)
+    }
   }
 
   const isFormValid = profile.skinTone && profile.height && profile.weight
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-subtle">
+        <Header />
+        <main className="pt-24 pb-8 px-4">
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center">
+              <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
+              <p className="text-muted-foreground">Loading your profile...</p>
+            </div>
+          </div>
+        </main>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -58,16 +137,21 @@ const Profile = () => {
       <main className="pt-24 pb-8 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
+              <User className="w-8 h-8 text-primary-foreground" />
+            </div>
             <h1 className="text-3xl font-bold mb-2">Style Profile</h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground max-w-md mx-auto">
               Help us understand your body type and preferences for better styling recommendations
             </p>
           </div>
 
-          <Card className="shadow-elegant">
-            <CardHeader>
+          <Card className="shadow-elegant border-0">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-secondary/5 border-b">
               <CardTitle className="flex items-center gap-2">
-                <User className="w-5 h-5" />
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <User className="w-5 h-5 text-primary" />
+                </div>
                 Personal Information
               </CardTitle>
             </CardHeader>
@@ -206,10 +290,19 @@ const Profile = () => {
                 onClick={handleSave}
                 className="w-full"
                 variant={isFormValid ? "gradient" : "outline"}
-                disabled={!isFormValid}
+                disabled={!isFormValid || saving}
               >
-                <Save className="w-4 h-4 mr-2" />
-                Save Profile
+                {saving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Save Profile
+                  </>
+                )}
               </Button>
             </CardContent>
           </Card>

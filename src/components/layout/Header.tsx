@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Shirt, User } from "lucide-react"
+import { Shirt, User, Layers } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
 export const Header = () => {
@@ -18,6 +18,15 @@ export const Header = () => {
         </Link>
         
         <div className="flex items-center gap-2">
+          <Link to="/wardrobe">
+            <Button 
+              variant="icon" 
+              size="icon-lg"
+              className={location.pathname === '/wardrobe' ? 'bg-primary text-primary-foreground' : ''}
+            >
+              <Layers className="w-5 h-5" />
+            </Button>
+          </Link>
           <Link to="/upload">
             <Button 
               variant="icon" 
